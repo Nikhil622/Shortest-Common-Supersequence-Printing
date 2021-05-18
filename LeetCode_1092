@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string shortestCommonSupersequence(string s, string p) {
+        int m=s.size(),n=p.size();
+        int t[m+1][n+1];
+        for(int i=0;i<=m;++i)
+            t[i][0]=0;
+        for(int j=0;j<=n;++j)
+            t[0][j]=0;
+        for(int i=1;i<=m;++i)
+        {
+            for(int j=1;j<=n;++j)
+            {  if(s[i-1]==p[j-1])
+                t[i][j]=1+t[i-1][j-1];
+               else
+                t[i][j]=max(t[i-1][j],t[i][j-1]);
+            }
+        }
+        int i=m,j=n;
+        string res="";
+        while(i>0 && j>0)
+        { 
+            if(s[i-1]==p[j-1])
+            {  res+=s[i-1];
+               --i;
+               --j;
+            }
+            else{
+               if(t[i][j-1]<t[i-1][j])
+               {  res+=s[i-1];
+                  --i;
+               } 
+               else{
+                  res+=p[j-1];
+                  --j;
+               }
+            }
+        }
+        while(i>0)
+        {  res+=s[i-1];
+            --i;
+        }
+        while(j>0)
+        {  res+=p[j-1];
+           --j; 
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
